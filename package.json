@@ -1,0 +1,65 @@
+{
+    "name": "express-api-structure-and-starter-kit",
+    "version": "1.0.0",
+    "description": "A well-structured Express.js API boilerplate with ES6 support, MongoDB integration, and essential dev tools for rapid backend development.",
+    "keywords": [
+        "express",
+        "nodejs",
+        "mongodb",
+        "mongoose",
+        "rest-api",
+        "starter-kit",
+        "backend",
+        "javascript"
+    ],
+    "main": "server.js",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "nodemon server.js",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "migrate": "migrate-mongo",
+        "migrate:create": "migrate-mongo create",
+        "migrate:up": "migrate-mongo up",
+        "migrate:down": "migrate-mongo down",
+        "migrate:status": "migrate-mongo status",
+        "prepare": "husky install"
+    },
+    "lint-staged": {
+        "*.js": [
+            "eslint --fix",
+            "git add"
+        ]
+    },
+    "imports": {
+        "#src/*": "./src/*.js",
+        "#models/*": "./src/models/*.js",
+        "#routes/*": "./src/routes/*.js",
+        "#root/*": "./*.js"
+    },
+    "dependencies": {
+        "bcrypt": "^6.0.0",
+        "body-parser": "^2.2.0",
+        "cors": "^2.8.5",
+        "dayjs": "^1.11.13",
+        "dotenv": "^16.5.0",
+        "express": "^5.1.0",
+        "express-async-handler": "^1.2.0",
+        "express-fileupload": "^1.5.1",
+        "express-validator": "^7.2.1",
+        "joi": "^17.13.3",
+        "js-yaml": "^4.1.0",
+        "mongoose": "^8.15.0",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.1"
+    },
+    "devDependencies": {
+        "@eslint/eslintrc": "^3.3.1",
+        "eslint": "^9.27.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.0.0",
+        "migrate-mongo": "^12.1.3",
+        "nodemon": "^3.1.10"
+    }
+}
