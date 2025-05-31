@@ -73,7 +73,7 @@ You can access the documentation in the following formats:
 Run the following command to export the Swagger spec from JSDoc comments to a YAML file at project root:
 
 ```bash
-npm run swagger:export
+npm node swagger.js
 ```
 
 ### Prerequisites
