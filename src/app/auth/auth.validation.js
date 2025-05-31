@@ -22,7 +22,7 @@ export const registrationValidation = Joi.object({
             'any.required': 'Password is required',
         }),
     confirmPassword: Joi.string()
-        .valid(Joi.ref('newPassword'))
+        .valid(Joi.ref('password'))
         .required()
         .messages({
             'any.only': 'Passwords must match',

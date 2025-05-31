@@ -1,6 +1,6 @@
 import {HTTP_UNPROCESSABLE_ENTITY} from '#src/utils/status-code.util';
 
-export const validator = async (res, validationSchema, data) => {
+async function validator(res, validationSchema, data) {
     const {error, value} = validationSchema.validate(data, {abortEarly: true, stripUnknown: true,});
 
     if (error) {
@@ -8,7 +8,7 @@ export const validator = async (res, validationSchema, data) => {
             return {[detail.context.key]: detail.message};
         });
         res.status(HTTP_UNPROCESSABLE_ENTITY).json({
-            success: false,
+            status: 'failed',
             message: 'Validation failed!',
             error: messages,
         });
@@ -16,4 +16,6 @@ export const validator = async (res, validationSchema, data) => {
         throw new Error('Validation failed!');
     }
     return value;
-};
+}
+
+export {validator}

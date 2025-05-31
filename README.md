@@ -55,19 +55,25 @@ These tools together help ensure high-quality, maintainable, and consistent code
 
 ## API Documentation
 
-This project includes API documentation generated with **Swagger**.
+This project includes comprehensive API documentation using **Swagger** and **Stoplight Elements**.
 
-You can choose to use the documentation in either:
+You can access the documentation in the following formats:
 
-- **JSDoc format**: API routes are documented inline using JSDoc comments.
-- **YAML format**: A generated `swagger.yaml` file is available for tools that consume Swagger/OpenAPI YAML specs.
+- **JSDoc Format**  
+  API routes are documented inline using JSDoc-style comments, and automatically parsed by Swagger tools.
+
+- **YAML Format**  
+  A `openapi.yaml` file is generated and available for use with Swagger-compatible tools.
+
+- **Stoplight Elements (Interactive UI)**  
+  The `openapi.yaml` file is rendered using [Stoplight Elements](https://github.com/stoplightio/elements), offering a modern and interactive interface to explore and test the API.
 
 ### How to generate or update the YAML file
 
 Run the following command to export the Swagger spec from JSDoc comments to a YAML file at project root:
 
 ```bash
-npm run swagger:export
+npm node swagger.js
 ```
 
 ### Prerequisites
