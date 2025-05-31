@@ -31,7 +31,7 @@ paths:
   /register:
     post:
       summary: Register a new user
-      description: Create a new user with email, password, and optional profile image.
+      description: Create a new user with email and password.
       tags:
         - Auth
       requestBody:
@@ -57,10 +57,6 @@ paths:
                   type: string
                   format: password
                   example: Pas$word123
-                profile:
-                  type: string
-                  format: binary
-                  description: Profile image upload (optional)
       responses:
         '201':
           description: User registered successfully
@@ -85,9 +81,9 @@ paths:
               schema:
                 type: object
                 properties:
-                  success:
-                    type: boolean
-                    example: false
+                  status:
+                    type: string
+                    example: failed
                   message:
                     type: string
                     example: Validation failed!
@@ -99,6 +95,9 @@ paths:
                         email:
                           type: string
                           example: email is not allowed to be empty
+                        password:
+                          type: string
+                          example: password is not allowed to be empty
                         confirmPassword:
                           type: string
                           example: Passwords must match
@@ -111,7 +110,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               required:
@@ -134,26 +133,42 @@ paths:
               schema:
                 type: object
                 properties:
-                  token:
+                  status:
                     type: string
-                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-                  user:
+                    example: fulfilled
+                  message:
+                    type: string
+                    example: logged in successfully
+                  data:
                     type: object
                     properties:
-                      id:
+                      token:
                         type: string
-                        example: 64e72f3bb6dc7b001f2a8c12
-                      name:
-                        type: string
-                        example: John Doe
-                      email:
-                        type: string
-                        example: john@example.com
-                      status:
-                        type: string
-                        example: active
-        '401':
-          description: Invalid email or password
+                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: Validation failed!
+                  error:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                          example: email is not allowed to be empty
+                        password:
+                          type: string
+                          example: password is not allowed to be empty
   /users:
     get:
       summary: Get all users
@@ -214,8 +229,6 @@ paths:
                           example: active
         '401':
           description: Unauthorized - Invalid or missing token
-        '500':
-          description: Server error
     post:
       summary: Create a new user
       description: Create a user account with name, email, and status.
@@ -226,7 +239,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               required:
@@ -247,6 +260,10 @@ paths:
                     - active
                     - inactive
                   example: active
+                profile:
+                  type: string
+                  format: binary
+                  description: Profile image upload (optional)
       responses:
         '201':
           description: User created successfully
@@ -276,45 +293,8 @@ paths:
                       status:
                         type: string
                         example: active
-        '400':
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: rejected
-                  message:
-                    type: string
-                    example: Invalid input
         '401':
           description: Unauthorized - missing or invalid token
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: rejected
-                  message:
-                    type: string
-                    example: Unauthorized
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: error
-                  message:
-                    type: string
-                    example: Internal server error
   /users/{id}:
     get:
       summary: Get a user by ID
@@ -361,17 +341,6 @@ paths:
                         example: active
         '401':
           description: Unauthorized - Invalid or missing token
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: rejected
-                  message:
-                    type: string
-                    example: Unauthorized
         '404':
           description: User not found
           content:
@@ -381,23 +350,10 @@ paths:
                 properties:
                   status:
                     type: string
-                    example: rejected
+                    example: failed
                   message:
                     type: string
                     example: User not found
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: error
-                  message:
-                    type: string
-                    example: Internal server error
     put:
       summary: Update a user
       description: Update a user's name, email, and status by ID.
@@ -415,7 +371,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               required:
@@ -425,17 +381,21 @@ paths:
               properties:
                 name:
                   type: string
-                  example: Jane Doe
+                  example: John Doe
                 email:
                   type: string
                   format: email
-                  example: jane@example.com
+                  example: john@example.com
                 status:
                   type: string
                   enum:
                     - active
                     - inactive
-                  example: inactive
+                  example: active
+                profile:
+                  type: string
+                  format: binary
+                  description: Profile image upload (optional)
       responses:
         '200':
           description: User updated successfully
@@ -465,32 +425,8 @@ paths:
                       status:
                         type: string
                         example: inactive
-        '400':
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: rejected
-                  message:
-                    type: string
-                    example: Invalid input
         '401':
           description: Unauthorized - missing or invalid token
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: rejected
-                  message:
-                    type: string
-                    example: Unauthorized
         '404':
           description: User not found
           content:
@@ -500,23 +436,10 @@ paths:
                 properties:
                   status:
                     type: string
-                    example: rejected
+                    example: failed
                   message:
                     type: string
                     example: User not found
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: error
-                  message:
-                    type: string
-                    example: Internal server error
     delete:
       summary: Delete a user
       description: Delete a user by their unique ID.
@@ -545,32 +468,8 @@ paths:
                   message:
                     type: string
                     example: User deleted successfully
-        '400':
-          description: Invalid user ID
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: rejected
-                  message:
-                    type: string
-                    example: Invalid user ID
         '401':
           description: Unauthorized - missing or invalid token
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: rejected
-                  message:
-                    type: string
-                    example: Unauthorized
         '404':
           description: User not found
           content:
@@ -580,22 +479,7 @@ paths:
                 properties:
                   status:
                     type: string
-                    example: rejected
+                    example: failed
                   message:
                     type: string
                     example: User not found
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: error
-                  message:
-                    type: string
-                    example: Internal server error
-
-

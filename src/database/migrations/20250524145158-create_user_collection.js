@@ -14,7 +14,7 @@ export default {
                     bsonType: 'object',
                     title: 'UserObject',
                     description: 'Schema for user registration',
-                    required: ['name', 'email', 'password', 'profile'],
+                    required: ['email', 'password'],
                     properties: {
                         name: {
                             bsonType: 'string',
@@ -45,6 +45,11 @@ export default {
                                     }
                                 }
                             }
+                        },
+                        status: {
+                            bsonType: 'string',
+                            enum: ['active', 'inactive'],
+                            description: 'Status must be either "active" or "inactive" and is required'
                         }
                     }
                 }

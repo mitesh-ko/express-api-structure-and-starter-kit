@@ -8,7 +8,7 @@ async function validator(res, validationSchema, data) {
             return {[detail.context.key]: detail.message};
         });
         res.status(HTTP_UNPROCESSABLE_ENTITY).json({
-            success: false,
+            status: 'failed',
             message: 'Validation failed!',
             error: messages,
         });

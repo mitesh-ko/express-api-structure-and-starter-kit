@@ -18,7 +18,7 @@ const corsOptions = {
 };
 
 export function applyCors(appInstance) {
-    if(CORS_ENABLED || true) {
+    if(CORS_ENABLED) {
         appInstance.use(cors(corsOptions));
     }
 }
