@@ -10,23 +10,17 @@ servers:
     description: Sandbox environment
   - url: https://api.yourdomain.com/v1
     description: Production environment
-
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-
-security:
-  - bearerAuth: []
-
 tags:
   - name: Auth
     description: API endpoints for managing Authentication
   - name: Users
     description: API endpoints for managing users
-
 paths:
   /register:
     post:

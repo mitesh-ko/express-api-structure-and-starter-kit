@@ -14,7 +14,7 @@ const router = Router();
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -51,6 +51,33 @@ const router = Router();
  *                 token:
  *                   type: string
  *                   example: eyJhbGciOiJIUzI1NiIsInR...
+ *       422:
+ *          description: Validation error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  status:
+ *                    type: string
+ *                    example: failed
+ *                  message:
+ *                    type: string
+ *                    example: Validation failed!
+ *                  error:
+ *                    type: array
+ *                    items:
+ *                      type: object
+ *                      properties:
+ *                        email:
+ *                          type: string
+ *                          example: email is not allowed to be empty
+ *                        password:
+ *                          type: string
+ *                          example: password is not allowed to be empty
+ *                        confirmPassword:
+ *                          type: string
+ *                          example: Passwords must match
  */
 router.post('/register', expressAsyncHandler(AuthController.register));
 
@@ -64,7 +91,7 @@ router.post('/register', expressAsyncHandler(AuthController.register));
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -87,26 +114,42 @@ router.post('/register', expressAsyncHandler(AuthController.register));
  *             schema:
  *               type: object
  *               properties:
- *                 token:
+ *                 status:
  *                   type: string
- *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
- *                 user:
+ *                   example: fulfilled
+ *                 message:
+ *                   type: string
+ *                   example: logged in successfully
+ *                 data:
  *                   type: object
  *                   properties:
- *                     id:
+ *                     token:
  *                       type: string
- *                       example: 64e72f3bb6dc7b001f2a8c12
- *                     name:
- *                       type: string
- *                       example: John Doe
- *                     email:
- *                       type: string
- *                       example: john@example.com
- *                     status:
- *                       type: string
- *                       example: active
- *       401:
- *         description: Invalid email or password
+ *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *       422:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: failed
+ *                 message:
+ *                   type: string
+ *                   example: Validation failed!
+ *                 error:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       email:
+ *                         type: string
+ *                         example: email is not allowed to be empty
+ *                       password:
+ *                         type: string
+ *                         example: password is not allowed to be empty
  */
 router.post('/login', expressAsyncHandler(AuthController.login));
 

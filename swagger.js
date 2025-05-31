@@ -17,7 +17,7 @@ const options = {
         servers: [
             {
                 url: 'http://localhost:4000/v1',
-                description: 'HTTP API Starter Kit',
+                description: 'Local development server',
             },
             {
                 url: 'https://sandbox.api.yourdomain.com/v1',
@@ -36,9 +36,6 @@ const options = {
                     bearerFormat: 'JWT'
                 }
             }
-        },
-        security: {
-            bearerAuth: []
         },
         tags: [
             {

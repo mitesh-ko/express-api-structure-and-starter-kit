@@ -8,9 +8,10 @@ const router = Router();
  * @swagger
  * /users:
  *   get:
- *     summary: "Get all users"
+ *     summary: Get all users
  *     description: Retrieve a list of users, optionally filtered.
- *     tags: [Users]
+ *     tags:
+ *       - Users
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -63,8 +64,6 @@ const router = Router();
  *                         example: active
  *       401:
  *         description: Unauthorized - Invalid or missing token
- *       500:
- *         description: Server error
  */
 router.get('/', expressAsyncHandler(UserController.listAll));
 
@@ -72,9 +71,10 @@ router.get('/', expressAsyncHandler(UserController.listAll));
  * @swagger
  * /users/{id}:
  *   get:
- *     summary: "Get a user by ID"
+ *     summary: Get a user by ID
  *     description: Retrieve a single user by their unique ID.
- *     tags: [Users]
+ *     tags:
+ *       - Users
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -113,6 +113,8 @@ router.get('/', expressAsyncHandler(UserController.listAll));
  *                     status:
  *                       type: string
  *                       example: active
+ *       401:
+ *         description: Unauthorized - Invalid or missing token
  *       404:
  *         description: User not found
  *         content:
@@ -122,36 +124,10 @@ router.get('/', expressAsyncHandler(UserController.listAll));
  *               properties:
  *                 status:
  *                   type: string
- *                   example: rejected
+ *                   example: failed
  *                 message:
  *                   type: string
  *                   example: User not found
- *       401:
- *         description: Unauthorized - Invalid or missing token
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: rejected
- *                 message:
- *                   type: string
- *                   example: Unauthorized
- *       500:
- *         description: Server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: error
- *                 message:
- *                   type: string
- *                   example: Internal server error
  */
 router.get('/:id', expressAsyncHandler(UserController.getById));
 
@@ -161,13 +137,14 @@ router.get('/:id', expressAsyncHandler(UserController.getById));
  *   post:
  *     summary: Create a new user
  *     description: Create a user account with name, email, and status.
- *     tags: [Users]
+ *     tags:
+ *       - Users
  *     security:
  *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -186,6 +163,10 @@ router.get('/:id', expressAsyncHandler(UserController.getById));
  *                 type: string
  *                 enum: [active, inactive]
  *                 example: active
+ *               profile:
+ *                 type: string
+ *                 format: binary
+ *                 description: Profile image upload (optional)
  *     responses:
  *       201:
  *         description: User created successfully
@@ -215,45 +196,8 @@ router.get('/:id', expressAsyncHandler(UserController.getById));
  *                     status:
  *                       type: string
  *                       example: active
- *       400:
- *         description: Invalid input
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: rejected
- *                 message:
- *                   type: string
- *                   example: Invalid input
  *       401:
  *         description: Unauthorized - missing or invalid token
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: rejected
- *                 message:
- *                   type: string
- *                   example: Unauthorized
- *       500:
- *         description: Server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: error
- *                 message:
- *                   type: string
- *                   example: Internal server error
  */
 router.post('/', expressAsyncHandler(UserController.store));
 
@@ -263,7 +207,8 @@ router.post('/', expressAsyncHandler(UserController.store));
  *   put:
  *     summary: Update a user
  *     description: Update a user's name, email, and status by ID.
- *     tags: [Users]
+ *     tags:
+ *       - Users
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -276,7 +221,7 @@ router.post('/', expressAsyncHandler(UserController.store));
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -286,15 +231,19 @@ router.post('/', expressAsyncHandler(UserController.store));
  *             properties:
  *               name:
  *                 type: string
- *                 example: Jane Doe
+ *                 example: John Doe
  *               email:
  *                 type: string
  *                 format: email
- *                 example: jane@example.com
+ *                 example: john@example.com
  *               status:
  *                 type: string
  *                 enum: [active, inactive]
- *                 example: inactive
+ *                 example: active
+ *               profile:
+ *                 type: string
+ *                 format: binary
+ *                 description: Profile image upload (optional)
  *     responses:
  *       200:
  *         description: User updated successfully
@@ -324,32 +273,8 @@ router.post('/', expressAsyncHandler(UserController.store));
  *                     status:
  *                       type: string
  *                       example: inactive
- *       400:
- *         description: Invalid input
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: rejected
- *                 message:
- *                   type: string
- *                   example: Invalid input
  *       401:
  *         description: Unauthorized - missing or invalid token
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: rejected
- *                 message:
- *                   type: string
- *                   example: Unauthorized
  *       404:
  *         description: User not found
  *         content:
@@ -359,23 +284,10 @@ router.post('/', expressAsyncHandler(UserController.store));
  *               properties:
  *                 status:
  *                   type: string
- *                   example: rejected
+ *                   example: failed
  *                 message:
  *                   type: string
  *                   example: User not found
- *       500:
- *         description: Server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: error
- *                 message:
- *                   type: string
- *                   example: Internal server error
  */
 router.put('/:id', expressAsyncHandler(UserController.update));
 
@@ -385,7 +297,8 @@ router.put('/:id', expressAsyncHandler(UserController.update));
  *   delete:
  *     summary: Delete a user
  *     description: Delete a user by their unique ID.
- *     tags: [Users]
+ *     tags:
+ *       - Users
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -409,32 +322,8 @@ router.put('/:id', expressAsyncHandler(UserController.update));
  *                 message:
  *                   type: string
  *                   example: User deleted successfully
- *       400:
- *         description: Invalid user ID
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: rejected
- *                 message:
- *                   type: string
- *                   example: Invalid user ID
  *       401:
  *         description: Unauthorized - missing or invalid token
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: rejected
- *                 message:
- *                   type: string
- *                   example: Unauthorized
  *       404:
  *         description: User not found
  *         content:
@@ -444,23 +333,10 @@ router.put('/:id', expressAsyncHandler(UserController.update));
  *               properties:
  *                 status:
  *                   type: string
- *                   example: rejected
+ *                   example: failed
  *                 message:
  *                   type: string
  *                   example: User not found
- *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: error
- *                 message:
- *                   type: string
- *                   example: Internal server error
  */
 router.delete('/:id', expressAsyncHandler(UserController.delete));
 
