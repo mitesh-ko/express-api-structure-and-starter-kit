@@ -19,7 +19,6 @@
         "dev": "nodemon server.js",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
-        "migrate": "migrate-mongo",
         "migrate:create": "migrate-mongo create",
         "migrate:up": "migrate-mongo up",
         "migrate:down": "migrate-mongo down",
