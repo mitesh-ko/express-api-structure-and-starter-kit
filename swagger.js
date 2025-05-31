@@ -3,13 +3,15 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import yaml from 'js-yaml';
 import * as fs from 'node:fs';
+import {publicPath} from '#src/utils/esm.utils';
+import {APP_VERSION} from '#src/constants';
 
 const options = {
     definition: {
         openapi: '3.0.0',
         info: {
             title: 'Express API Starter Kit',
-            version: '1.0.0',
+            version: APP_VERSION,
             description: 'API documentation for Express API starter kit',
         },
         servers: [
@@ -56,6 +58,6 @@ export const swaggerSpec = swaggerJSDoc(options);
 
 const yamlStr = yaml.dump(swaggerSpec);
 
-fs.writeFileSync('swagger.yaml', yamlStr, 'utf8');
+fs.writeFileSync(publicPath('api-docs', 'openapi.yaml'), yamlStr, 'utf8');
 
 export {swaggerUi};

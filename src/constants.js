@@ -1,9 +1,7 @@
 import {config} from 'dotenv';
-import {dirname} from 'path';
-import {fileURLToPath} from 'url';
-
 config();
 
+export const APP_VERSION = '1.1.0'
 export const IP = process.env.APP_URL || '127.0.0.1';
 export const PORT = process.env.PORT || 4000;
 export const APP_URL = process.env.APP_URL || `http://${IP}:${PORT}`;
@@ -36,7 +34,3 @@ export const CORS_ORIGIN = process.env.CORS_ORIGIN || ['http://127.0.0.1:3000', 
 export const CORS_METHODS = process.env.CORS_METHODS || ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'];
 export const CORS_ALLOWED_HEADERS = process.env.CORS_ALLOWED_HEADERS || ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'];
 export const CORS_EXPOSE_HEADERS = process.env.CORS_EXPOSE_HEADERS || ['Content-Length', 'Authorization'];
-
-
-export const __filename = fileURLToPath(import.meta.url);
-export const __dirname = dirname(__filename);
