@@ -1,7 +1,9 @@
 import {config} from 'dotenv';
+
 config();
 
 export const APP_VERSION = '1.1.0'
+export const APP_ENV = process.env.APP_ENV || 'development';
 export const IP = process.env.APP_URL || '127.0.0.1';
 export const PORT = process.env.PORT || 4000;
 export const APP_URL = process.env.APP_URL || `http://${IP}:${PORT}`;

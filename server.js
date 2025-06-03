@@ -29,3 +29,5 @@ app.get('/api-docs', (req, res) => {
 app.listen(PORT, () => {
     console.log(APP_URL);
 });
+
+export default app;
