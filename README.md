@@ -1,5 +1,7 @@
 # Express API Structure and Starter Kit
 
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 ---
 
 This project is created to provide a structured and scalable starting point for building RESTful APIs using Express.js. It follows modern JavaScript (ES6+) standards and includes essential middleware and utilities for common API features like authentication, file handling, database integration, and more.
